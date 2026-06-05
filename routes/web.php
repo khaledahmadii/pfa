@@ -22,7 +22,7 @@ Route::middleware(['check.user.session'])->group(function () {
     Route::post('/interv/add', [App\Http\Controllers\interv::class, 'ajouter'])->name('intervention.add');
     Route::post('/interv/update', [App\Http\Controllers\interv::class, 'update'])->name('intervention.update');
     Route::get('/interv/del/{id}', [App\Http\Controllers\interv::class, 'supprimer'])->name('intervention.delete');
-    Route::get('/dash', [App\Http\Controllers\dash::class, 'index'])->name('dash');
+    Route::get('/dash', [App\Http\Controllers\dash::class, 'index']);
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile');
     Route::post('/compte/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('compte.updatePassword');
 
