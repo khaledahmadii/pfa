@@ -6,17 +6,14 @@ on:
       - main
 
 jobs:
-
   deploy:
-
     runs-on: self-hosted
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Fix permissions (important)
+      - name: Fix permissions
         run: sudo chown -R $USER:$USER .
 
       - name: Stop containers
@@ -27,6 +24,22 @@ jobs:
 
       - name: Start containers
         run: docker compose up -d
+
+      - name: Install Composer dependencies
+        run: docker compose exec -T app composer install --no-dev --optimize-autoloader
+
+      - name: Clear Laravel cache
+        run: |
+          docker compose exec -T app php artisan config:clear
+          docker compose exec -T app php artisan cache:clear
+          docker compose exec -T app php artisan route:clear
+          docker compose exec -T app php artisan view:clear
+
+      - name: Optimize Laravel
+        run: |
+          docker compose exec -T app php artisan config:cache
+          docker compose exec -T app php artisan route:cache
+          docker compose exec -T app php artisan view:cache
 
       - name: Show status
         run: docker ps
