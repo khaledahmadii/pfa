@@ -25,6 +25,9 @@ jobs:
       - name: Start containers
         run: docker compose up -d
 
+      - name: Wait for MySQL
+        run: docker compose exec -T db sh -c 'until mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; do sleep 1; done'
+
       - name: Install Composer dependencies
         run: docker compose exec -T app composer install --no-dev --optimize-autoloader
 
