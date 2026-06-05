@@ -20,7 +20,7 @@ jobs:
         run: docker compose down || true
 
       - name: Build containers
-        run: docker compose build --no-cache
+        run: docker compose build
 
       - name: Start containers
         run: docker compose up -d
@@ -30,6 +30,9 @@ jobs:
 
       - name: Install Composer dependencies
         run: docker compose exec -T app composer install --no-dev --optimize-autoloader
+
+      - name: Run database migrations
+        run: docker compose exec -T app php artisan migrate --force
 
       - name: Clear Laravel cache
         run: |
